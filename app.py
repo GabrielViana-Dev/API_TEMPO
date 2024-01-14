@@ -25,7 +25,7 @@ def resultados():
         temp_min = round((dados_api['main']['temp_min'] - 273.15),2)
 
         data = (datetime.date.today()).strftime("%d/%m/%Y")
-    except Exception as error:
+    except Exception:
         return render_template('erro.html')
 
     return render_template('resultados.html', cidade = cidade.upper(), description = description ,temp = temp, temp_max = temp_max, temp_min = temp_min, data = data)
