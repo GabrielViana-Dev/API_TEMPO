@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from api_tempo import consulta_api
+from api_temp import query_api
 import datetime
 
 app = Flask(__name__)
@@ -8,27 +8,25 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/resultados/', methods =['GET','POST'] )
-def resultados():
+@app.route('/results/', methods =['GET','POST'] )
+def results():
 
-    #Realizar consulta na API externa e armazenas dados em uma variável
-
-    cidade = request.form['cidade']
+    city = request.form['city']
     
     try: 
-        dados_api = consulta_api(cidade)
+        data_api = query_api(city)
 
-        description = dados_api['weather'][0]['description']
+        description = data_api['weather'][0]['description']
 
-        temp = round((dados_api['main']['temp'] - 273.15),2)
-        temp_max = round((dados_api['main']['temp_max'] - 273.15),2)
-        temp_min = round((dados_api['main']['temp_min'] - 273.15),2)
+        temp = round((data_api['main']['temp'] - 273.15),2)
+        temp_max = round((data_api['main']['temp_max'] - 273.15),2)
+        temp_min = round((data_api['main']['temp_min'] - 273.15),2)
 
-        data = (datetime.date.today()).strftime("%d/%m/%Y")
+        date = (datetime.date.today()).strftime("%d/%m/%Y")
     except Exception:
         return render_template('erro.html')
 
-    return render_template('resultados.html', cidade = cidade.upper(), description = description ,temp = temp, temp_max = temp_max, temp_min = temp_min, data = data)
+    return render_template('results.html', city = city.upper(), description = description ,temp = temp, temp_max = temp_max, temp_min = temp_min, date = date)
 
 if __name__ == '__main__':
     app.run(debug=True)
